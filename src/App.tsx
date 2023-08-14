@@ -4,7 +4,7 @@ import Game from "./components/Game";
 function App() {
   return (
     <>
-      Hello Wordle
+      Hello Wordiness
       <Game />
     </>
   );
