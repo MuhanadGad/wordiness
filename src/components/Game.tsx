@@ -1,11 +1,7 @@
 import { useState } from "react";
 import "../assets/scss/Game.scss";
-
 import JSONDATA from "../assets/words/data";
-// import KeyboardReact from "react-simple-keyboard";
 import leftCat from "../assets/images/nyan-cat.gif";
-import rightCat from "../assets/images/pusheen-donut.gif";
-import righttcat from "../assets/images/2044605_96f1c.gif";
 import BG from "../assets/images/pixel-art-of-80s-retro-sci-fi-background-herbert.jpg";
 import Swal from "sweetalert2";
 
