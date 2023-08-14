@@ -76,6 +76,24 @@ const Game = () => {
       }
     } else {
       setGameEnded(true);
+      Swal.fire({
+        title: "You LOST!",
+        html: ` The correct answer was <b>${word}</b>! `,
+        width: 600,
+        padding: "3em",
+        color: "#fff",
+        background: `#fff url(${BG})`,
+        showConfirmButton: true,
+        // showCancelButton: true,
+        confirmButtonColor: "#00ff00cf",
+        cancelButtonColor: "#f00000cf",
+        confirmButtonText: "Play Again!",
+        cancelButtonText: "View Results",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          playAgain();
+        }
+      });
     }
   };
 
