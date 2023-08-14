@@ -1,0 +1,29 @@
+.game-wrapper {
+  .game-body {
+    .single-guess {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      .letter {
+        width: 40px;
+        height: 40px;
+        background: blanchedalmond;
+        margin: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &.contains {
+          background: red !important;
+          transform: rotate(360deg);
+          transition: all 2s ease-in-out;
+        }
+        &.correct {
+          transition: all 2s ease-in-out;
+          transform: rotate(360deg);
+          background: green !important;
+        }
+      }
+    }
+  }
+}
