@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../assets/scss/Game.scss";
+import dictionary from "../assets/words/dictionary";
 import JSONDATA from "../assets/words/data";
 import leftCat from "../assets/images/nyan-cat.gif";
 import BG from "../assets/images/pixel-art-of-80s-retro-sci-fi-background-herbert.jpg";
@@ -17,6 +18,8 @@ interface guessedWord {
 }
 
 const Game = () => {
+  // console.log(JSONDATA);
+
   const [gamePlaying, setGamePlaying] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
   const [word, setWord] = useState("");
@@ -33,13 +36,14 @@ const Game = () => {
   );
   const [guess, setGuess] = useState("");
 
-  const words = JSONDATA;
+  const words = JSONDATA.filter((num) => {
+    return num.length === 4;
+  });
 
   const startGame = () => {
     const randomWord = words[Math.floor(Math.random() * words.length)];
     console.log(Math.floor(Math.random() * words.length));
     setGuessCount(0);
-    // setGuessedWords([]);
     setGamePlaying(true);
     setWord(randomWord);
   };
@@ -134,6 +138,9 @@ const Game = () => {
   };
 
   const handleWordGuess = (guess: string) => {
+    console.log(guess.length, word.length);
+    if (guess.length !== word.length) return;
+    if (!dictionary.includes(guess)) return;
     const tempGuess: guessedWords = guessedWords[guessCount];
     setGuessCount((e) => e + 1);
     checkEndGame(guess);

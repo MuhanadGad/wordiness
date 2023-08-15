@@ -1,4 +1,4 @@
-const JSONDATA = [
+﻿[
   "aardvark",
   "aback",
   "abacus",
@@ -7545,6 +7545,4 @@ const JSONDATA = [
   "zoologist",
   "zoology",
   "zucchini"
-];
-
-export default JSONDATA;
+]
