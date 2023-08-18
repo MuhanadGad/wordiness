@@ -13,10 +13,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.5",
+    "@reduxjs/toolkit": "^1.9.5",
+    "antd": "^5.8.4",
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-simple-keyboard": "^3.6.51",
+    "react-redux": "^8.1.2",
+    "react-simple-keyboard": "^3.6.53",
     "sass": "^1.65.1",
     "sweetalert2": "^11.7.22"
   },

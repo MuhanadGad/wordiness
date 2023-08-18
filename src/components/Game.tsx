@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../assets/scss/Game.scss";
 import dictionary from "../assets/words/dictionary";
 import JSONDATA from "../assets/words/data";
 import leftCat from "../assets/images/nyan-cat.gif";
 import BG from "../assets/images/pixel-art-of-80s-retro-sci-fi-background-herbert.jpg";
 import Swal from "sweetalert2";
-
-interface guessedWords {
-  word: string;
-  letters: guessedWord[];
-}
-
-interface guessedWord {
-  letter: string;
-  contains: boolean;
-  correct: boolean;
-}
+import Keyboard from "react-simple-keyboard";
+import "react-simple-keyboard/build/css/index.css";
+import { guessedWords } from "../types/main";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const Game = () => {
-  // console.log(JSONDATA);
+  // TODO: use ForwardRefs to call playAgain() from App.tsx on replay click
+  // TODO: Add Virtual Keyboard to mark correct,semi-correct,wrong letters
+  // TODO: start setting up antdesign theme provider
+  // TODO: Move all states here to redux slice gameState
 
+  const gamePrefs = useSelector((state: RootState) => state.gameSettings);
   const [gamePlaying, setGamePlaying] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
   const [word, setWord] = useState("");
@@ -27,22 +25,24 @@ const Game = () => {
   const [guessedWords, setGuessedWords] = useState<guessedWords[]>(
     new Array(6).fill(undefined).map(() => ({
       word: "",
-      letters: new Array(4).fill(undefined).map(() => ({
-        letter: "",
-        contains: false,
-        correct: false,
-      })),
+      letters: new Array(gamePrefs.selectedWordLength || 4)
+        .fill(undefined)
+        .map(() => ({
+          letter: "",
+          contains: false,
+          correct: false,
+        })),
     }))
   );
   const [guess, setGuess] = useState("");
 
   const words = JSONDATA.filter((num) => {
-    return num.length === 4;
+    return num.length === gamePrefs.selectedWordLength;
   });
 
   const startGame = () => {
+    resetGame();
     const randomWord = words[Math.floor(Math.random() * words.length)];
-    console.log(Math.floor(Math.random() * words.length));
     setGuessCount(0);
     setGamePlaying(true);
     setWord(randomWord);
@@ -50,7 +50,6 @@ const Game = () => {
 
   const checkEndGame = (guess: string) => {
     if (guessCount !== 5) {
-      console.log("dah", guess, word);
       if (guess === word) {
         setGameEnded(true);
         Swal.fire({
@@ -101,20 +100,26 @@ const Game = () => {
     }
   };
 
-  const playAgain = () => {
+  const resetGame = () => {
     setGameEnded(false);
     setWord("");
     setGuessCount(0);
     setGuessedWords(
       new Array(6).fill(undefined).map(() => ({
         word: "",
-        letters: new Array(4).fill(undefined).map(() => ({
-          letter: "",
-          contains: false,
-          correct: false,
-        })),
+        letters: new Array(gamePrefs.selectedWordLength || 4)
+          .fill(undefined)
+          .map(() => ({
+            letter: "",
+            contains: false,
+            correct: false,
+          })),
       }))
     );
+  };
+
+  const playAgain = () => {
+    resetGame();
     startGame();
   };
 
@@ -138,7 +143,6 @@ const Game = () => {
   };
 
   const handleWordGuess = (guess: string) => {
-    console.log(guess.length, word.length);
     if (guess.length !== word.length) return;
     if (!dictionary.includes(guess)) return;
     const tempGuess: guessedWords = guessedWords[guessCount];

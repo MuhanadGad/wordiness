@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Lalezar&display=swap");
+
 .game-wrapper {
   .game-body {
     .single-guess {
@@ -6,8 +8,11 @@
       align-items: center;
       justify-content: center;
       .letter {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
+        font-family: "Lalezar";
+        text-transform: uppercase;
+        font-size: 56px;
         background: blanchedalmond;
         margin: 10px 0;
         display: flex;
