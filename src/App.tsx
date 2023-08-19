@@ -5,7 +5,7 @@ import { FloatButton } from "antd";
 import {
   SettingOutlined,
   NumberOutlined,
-  BgColorsOutlined,
+  RedoOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setAmount } from "./store/slices/gameSettingsSlice";
@@ -51,7 +51,7 @@ function App() {
         />
         <FloatButton
           onClick={() => gameRef.current.restartGame()}
-          icon={<BgColorsOutlined />}
+          icon={<RedoOutlined />}
         />
       </FloatButton.Group>
       <Game ref={gameRef} />

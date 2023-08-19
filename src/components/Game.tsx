@@ -17,10 +17,15 @@ const Game = forwardRef((_props, ref) => {
       playAgain();
     },
   }));
-  // DONE: use ForwardRefs to call playAgain() from App.tsx on replay click
-  // TODO: Add Virtual Keyboard to mark correct,semi-correct,wrong letters
-  // TODO: start setting up antdesign theme provider
-  // TODO: Move all states here to redux slice gameState
+  // DONE:  use ForwardRefs to call playAgain() from App.tsx on replay click
+
+  // DONE:  Add Virtual Keyboard to mark correct,semi-correct,wrong letters
+
+  // BUG:  Backspace on Virtual Keyboard to be fixed
+
+  // TODO:  start setting up antdesign theme provider
+
+  // TODO:  Move all states here to redux slice gameState
 
   const keyboardRef = useRef<KeyboardReactInterface | null>(null);
   const gamePrefs = useSelector((state: RootState) => state.gameSettings);
