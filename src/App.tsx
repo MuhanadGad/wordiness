@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
 import Game from "./components/Game";
 import { FloatButton } from "antd";
@@ -12,6 +12,7 @@ import { setAmount } from "./store/slices/gameSettingsSlice";
 import { RootState } from "./store/store";
 
 function App() {
+  const gameRef: any | undefined = useRef();
   const dispatch = useDispatch();
   const gamePrefs = useSelector((state: RootState) => state.gameSettings);
 
@@ -47,9 +48,12 @@ function App() {
             )
           }
         />
-        <FloatButton icon={<BgColorsOutlined />} />
+        <FloatButton
+          onClick={() => gameRef.current.restartGame()}
+          icon={<BgColorsOutlined />}
+        />
       </FloatButton.Group>
-      <Game />
+      <Game ref={gameRef} />
     </>
   );
 }

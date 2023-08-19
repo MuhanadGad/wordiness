@@ -14,6 +14,7 @@ module.exports = {
     "no-unused-vars": "warn",
     "no-useless-escape": "off",
     "react/no-unescaped-entities": 0,
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unused-vars": ["warn"],
     "react-refresh/only-export-components": [
       "warn",

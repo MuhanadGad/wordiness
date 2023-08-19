@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import "../assets/scss/Game.scss";
 import dictionary from "../assets/words/dictionary";
 import JSONDATA from "../assets/words/data";
 import leftCat from "../assets/images/nyan-cat.gif";
 import BG from "../assets/images/pixel-art-of-80s-retro-sci-fi-background-herbert.jpg";
 import Swal from "sweetalert2";
-import Keyboard from "react-simple-keyboard";
+// import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import { guessedWords } from "../types/main";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
-const Game = () => {
-  // TODO: use ForwardRefs to call playAgain() from App.tsx on replay click
+const Game = forwardRef((props, ref) => {
+  useImperativeHandle(ref, () => ({
+    restartGame() {
+      playAgain();
+    },
+  }));
+  // DONE: use ForwardRefs to call playAgain() from App.tsx on replay click
   // TODO: Add Virtual Keyboard to mark correct,semi-correct,wrong letters
   // TODO: start setting up antdesign theme provider
   // TODO: Move all states here to redux slice gameState
@@ -143,6 +148,7 @@ const Game = () => {
   };
 
   const handleWordGuess = (guess: string) => {
+    guess = guess.toLowerCase();
     if (guess.length !== word.length) return;
     if (!dictionary.includes(guess)) return;
     const tempGuess: guessedWords = guessedWords[guessCount];
@@ -199,6 +205,6 @@ const Game = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Game;
