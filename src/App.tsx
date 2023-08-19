@@ -12,6 +12,7 @@ import { setAmount } from "./store/slices/gameSettingsSlice";
 import { RootState } from "./store/store";
 
 function App() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const gameRef: any | undefined = useRef();
   const dispatch = useDispatch();
   const gamePrefs = useSelector((state: RootState) => state.gameSettings);

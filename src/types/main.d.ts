@@ -15,3 +15,8 @@ export interface gameSettingsState {
     dark:boolean
   }
   
+  export interface markedLetters {
+    correct:string[],
+    contains:string[],
+    wrong:string[],
+  }

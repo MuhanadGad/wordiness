@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Lalezar&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Lalezar&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@900&display=swap");
 
 .game-wrapper {
   .game-body {
@@ -8,18 +9,19 @@
       align-items: center;
       justify-content: center;
       .letter {
-        width: 60px;
-        height: 60px;
-        font-family: "Lalezar";
+        width: 40px;
+        height: 40px;
+        font-family: "Kanit";
         text-transform: uppercase;
-        font-size: 56px;
-        background: blanchedalmond;
+        font-size: 36px;
+        background: black;
+        color: white;
         margin: 10px 0;
         display: flex;
         justify-content: center;
         align-items: center;
         &.contains {
-          background: red !important;
+          background: orangered !important;
           transform: rotate(360deg);
           transition: all 2s ease-in-out;
         }
@@ -36,5 +38,26 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    .upper-kb {
+      text-transform: uppercase;
+      .hg-button {
+        &.hg-standardBtn {
+          width: 40px;
+          height: 40px;
+        }
+        &.hg-functionBtn {
+          height: auto;
+        }
+      }
+      .wrong {
+        background-color: red;
+      }
+      .correct {
+        background-color: green !important;
+      }
+      .contains {
+        background-color: orangered;
+      }
+    }
   }
 }
