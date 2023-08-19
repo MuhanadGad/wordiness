@@ -11,7 +11,7 @@ import { guessedWords } from "../types/main";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
-const Game = forwardRef((props, ref) => {
+const Game = forwardRef((_props, ref) => {
   useImperativeHandle(ref, () => ({
     restartGame() {
       playAgain();
