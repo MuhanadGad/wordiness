@@ -10,12 +10,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { setAmount } from "./store/slices/gameSettingsSlice";
 import { RootState } from "./store/store";
+// import PreGame from "./components/PreGame";
 
 function App() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const gameRef: any | undefined = useRef();
   const dispatch = useDispatch();
   const gamePrefs = useSelector((state: RootState) => state.gameSettings);
+  // const gameState = useSelector((state: RootState) => state.gameState);
 
   const [wordLengthStep, setWordLengthStep] = useState(1);
 
@@ -31,7 +33,6 @@ function App() {
   };
   return (
     <>
-      Hello Wordiness
       <FloatButton.Group
         trigger="click"
         type="primary"
@@ -54,6 +55,7 @@ function App() {
           icon={<RedoOutlined />}
         />
       </FloatButton.Group>
+
       <Game ref={gameRef} />
     </>
   );

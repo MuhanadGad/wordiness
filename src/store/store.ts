@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import gameSettingsReducer from './slices/gameSettingsSlice'
+import gameStateReducer from './slices/gameStateSlice'
 
 export const store = configureStore({
   reducer: {
-    gameSettings:gameSettingsReducer
+    gameSettings:gameSettingsReducer,
+    gameState:gameStateReducer
   },
 })
 

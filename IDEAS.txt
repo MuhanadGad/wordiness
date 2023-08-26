@@ -1,2 +1,12 @@
 - Challenge your friend with a word of your choice and limit it with a timer
 - Hard Mode no targeted words
+
+  // DONE:  use ForwardRefs to call playAgain() from App.tsx on replay click
+
+  // DONE:  Add Virtual Keyboard to mark correct,semi-correct,wrong letters
+
+  // DONE:  Backspace on Virtual Keyboard to be fixed
+
+  // TODO:  start setting up antdesign theme provider
+
+  // TODO:  Move all states here to redux slice gameState

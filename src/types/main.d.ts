@@ -14,6 +14,10 @@ export interface gameSettingsState {
     selectedWordLength: number,
     dark:boolean
   }
+  export interface gameState {
+    gamePlaying:boolean,
+    gameEnded:boolean,
+  }
   
   export interface markedLetters {
     correct:string[],

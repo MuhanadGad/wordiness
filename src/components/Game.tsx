@@ -8,20 +8,21 @@ import Swal from "sweetalert2";
 import Keyboard, { KeyboardReactInterface } from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import { guessedWords, markedLetters } from "../types/main";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import { endState, startState } from "../store/slices/gameStateSlice";
 
 const Game = forwardRef((_props, ref) => {
   useImperativeHandle(ref, () => ({
     restartGame() {
-      playAgain();
+      startGame();
     },
   }));
   // DONE:  use ForwardRefs to call playAgain() from App.tsx on replay click
 
   // DONE:  Add Virtual Keyboard to mark correct,semi-correct,wrong letters
 
-  // BUG:  Backspace on Virtual Keyboard to be fixed
+  // DONE:  Backspace on Virtual Keyboard to be fixed
 
   // TODO:  start setting up antdesign theme provider
 
@@ -29,8 +30,7 @@ const Game = forwardRef((_props, ref) => {
 
   const keyboardRef = useRef<KeyboardReactInterface | null>(null);
   const gamePrefs = useSelector((state: RootState) => state.gameSettings);
-  const [gamePlaying, setGamePlaying] = useState(false);
-  const [gameEnded, setGameEnded] = useState(false);
+  const gameState = useSelector((state: RootState) => state.gameState);
   const [word, setWord] = useState("");
   const [guessCount, setGuessCount] = useState(0);
   const [markedLetters, setMarkedLetters] = useState<markedLetters>({
@@ -51,77 +51,85 @@ const Game = forwardRef((_props, ref) => {
     }))
   );
   const [guess, setGuess] = useState("");
-
-  const words = JSONDATA.filter((num) => {
-    return num.length === gamePrefs.selectedWordLength;
-  });
+  const dispatch = useDispatch();
 
   const startGame = () => {
+    console.log("c");
     resetGame();
+    selectRandomWord(gamePrefs.selectedWordLength);
+  };
+
+  const selectRandomWord = (wordLength: number) => {
+    const words = JSONDATA.filter((num) => {
+      return num.length === wordLength;
+    });
     const randomWord = words[Math.floor(Math.random() * words.length)];
-    setGuessCount(0);
-    setGamePlaying(true);
     setWord(randomWord);
   };
 
-  const checkEndGame = (guess: string) => {
-    if (guessCount !== 5) {
-      if (guess === word) {
-        setGameEnded(true);
-        Swal.fire({
-          title: "You Won!",
-          html: `<b>${word}</b> is the correct answer! `,
-          width: 600,
-          padding: "3em",
-          color: "#fff",
-          background: `#fff url(${BG})`,
-          backdrop: `
-            rgba(0,0,123,0.4)
-            url(${leftCat})
-            left center
-            no-repeat
-          `,
-          showConfirmButton: true,
-          showCancelButton: true,
-          focusConfirm: false,
-          allowEnterKey: false,
-          confirmButtonColor: "#00ff00cf",
-          cancelButtonColor: "#f00000cf",
-          confirmButtonText: "Play Again!",
-          cancelButtonText: "View Results",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            playAgain();
-          }
-        });
+  const winGame = () => {
+    Swal.fire({
+      title: "You Won!",
+      html: `<b>${word}</b> is the correct answer! `,
+      width: 600,
+      padding: "3em",
+      color: "#fff",
+      background: `#fff url(${BG})`,
+      backdrop: `
+        rgba(0,0,123,0.4)
+        url(${leftCat})
+        left center
+        no-repeat
+      `,
+      showConfirmButton: true,
+      showCancelButton: true,
+      focusConfirm: false,
+      allowEnterKey: false,
+      confirmButtonColor: "#00ff00cf",
+      cancelButtonColor: "#f00000cf",
+      confirmButtonText: "Play Again!",
+      cancelButtonText: "View Results",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startGame();
       }
-    } else {
-      setGameEnded(true);
-      Swal.fire({
-        title: "You LOST!",
-        html: ` The correct answer was <b>${word}</b>! `,
-        width: 600,
-        padding: "3em",
-        color: "#fff",
-        background: `#fff url(${BG})`,
-        showConfirmButton: true,
-        // showCancelButton: true,
-        confirmButtonColor: "#00ff00cf",
-        cancelButtonColor: "#f00000cf",
-        confirmButtonText: "Play Again!",
-        cancelButtonText: "View Results",
-        allowEnterKey: false,
-        focusConfirm: false,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          playAgain();
-        }
-      });
+    });
+  };
+
+  const loseGame = () => {
+    Swal.fire({
+      title: "You LOST!",
+      html: ` The correct answer was <b>${word}</b>! `,
+      width: 600,
+      padding: "3em",
+      color: "#fff",
+      background: `#fff url(${BG})`,
+      showConfirmButton: true,
+      // showCancelButton: true,
+      confirmButtonColor: "#00ff00cf",
+      cancelButtonColor: "#f00000cf",
+      confirmButtonText: "Play Again!",
+      cancelButtonText: "View Results",
+      allowEnterKey: false,
+      focusConfirm: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startGame();
+      }
+    });
+  };
+
+  const checkEndGame = (guess: string) => {
+    if (guess === word) {
+      winGame();
+      dispatch(endState());
+    } else if (guessCount === 5) {
+      dispatch(endState());
+      loseGame();
     }
   };
 
   const resetGame = () => {
-    setGameEnded(false);
     setWord("");
     setGuessCount(0);
     setGuessedWords(
@@ -137,11 +145,7 @@ const Game = forwardRef((_props, ref) => {
       }))
     );
     resetKeyboard();
-  };
-
-  const playAgain = () => {
-    resetGame();
-    startGame();
+    dispatch(startState());
   };
 
   const checkWordCorrectness = (
@@ -213,20 +217,18 @@ const Game = forwardRef((_props, ref) => {
 
   const keyboardLayout = {
     default: [
-      "q w e r t y u i o p {backspace}",
-      "a s d f g h j k l {enter}",
-      "z x c v b n m",
+      "q w e r t y u i o p",
+      "a s d f g h j k l",
+      "{backspace} z x c v b n m {enter}",
     ],
   };
 
-  const onKeyboardChange = (input) => {
-    if (gamePlaying && input.length <= word.length) {
+  const onKeyboardChange = (input: string) => {
+    if (gameState.gamePlaying && input.length <= word.length) {
       setGuess(input);
     }
   };
-  const onKeyboardPress = (button, e) => {
-    console.log(e);
-    e.stopPropagation();
+  const onKeyboardPress = (button: string) => {
     if (button === "{enter}") {
       handleWordGuess(guess);
     }
@@ -235,7 +237,7 @@ const Game = forwardRef((_props, ref) => {
   return (
     <div className="game-wrapper">
       <div className="game-head">
-        <button disabled={gamePlaying} onClick={startGame}>
+        <button disabled={gameState.gamePlaying} onClick={startGame}>
           Start Game
         </button>
       </div>
@@ -273,6 +275,7 @@ const Game = forwardRef((_props, ref) => {
           minLength={word.length}
         />
         <Keyboard
+          // debug
           keyboardRef={(r) => (keyboardRef.current = r)}
           onChange={onKeyboardChange}
           onKeyPress={onKeyboardPress}
@@ -286,10 +289,6 @@ const Game = forwardRef((_props, ref) => {
           inputName="guess"
           maxLength={word.length}
         />
-
-        <button disabled={gameEnded} onClick={() => handleWordGuess(guess)}>
-          Submit
-        </button>
       </div>
     </div>
   );
